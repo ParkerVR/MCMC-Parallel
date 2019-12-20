@@ -12,7 +12,10 @@
 //#include "cuPrintf.cu"
 //#include "cuPrintf.cuh"
 
+#include 
+
 void initializeArray1D(float *arr, int len, int seed);
+void printarr(float* arr, int sz);
 /*
 // Assertion to check for errors
 #define CUDA_SAFE_CALL(ans) { gpuAssert((ans), (char *)__FILE__, __LINE__); }
@@ -261,8 +264,8 @@ int main(int argc, char **argv) {
   // Allocate array on host memory
   s_p = (float *) malloc(allocSizeSerial);
 
-
-  initializeArray1D(s_p,sz,420  )
+  int seed = 420;
+  initializeArray1D(s_p, sz, seed)
 
   // Conduct serial SOR
   int out;
@@ -294,33 +297,46 @@ int main(int argc, char **argv) {
 }
 
 
-void initializeArray1D(float *arr, int len, int seed) {
-  int i;
+void initializeArray1D(float *arr, int sz, int seed) {
+  int i, j;
   float randNum;
   srand(seed);
 
   // Generate random rows that sum to probability of 1
 
   float rowSum;
-  for (i = 0; i < len-2; i++) {
+  for (i = 0; i < sz-2; i++) {
     rowSum = 0;
-    for (j = 0; j < len; j++) {
+    for (j = 0; j < sz; j++) {
       randNum = (float) rand();
-      rowSum += randNum
-      arr[i*len + j] = randNum;
+      rowSum += randNum;
+      arr[i*sz + j] = rowSum;
+      printf("%f\n", arr[i*sz+j]);
     }
-    for (j = 0; j < len; j++) {
-      arr[i*len + j] = arr[i*len + j] / randSum;
+    for (j = 0; j < sz; j++) {
+      arr[i*sz + j] = arr[i*sz + j] / rowSum;
     }
   }
 
   // Define (2) end states
-
-  for (int j = 0; j < len; j++) {
-    arr[(len-2)*len + j] = 0;
-    arr[(len-1)*len + j] = 0;
+  // Note based on rules currently, last number will always be end state
+  for (int j = 0; j < sz; j++) {
+    arr[(sz-2)*sz + j] = 0;
+    arr[(sz-1)*sz + j] = 0;
   }
 
-  arr[(len-2)*len + len-2] = 1.0;
-  arr[(len-1)*len + len-1] = 1.0;
+  arr[(sz-2)*sz + sz-2] = 1.0;
+  arr[(sz-1)*sz + sz-1] = 1.0;
+
+  printarr(arr,sz);
+}
+
+void printarr(float* arr, int sz) {
+  int i, j;
+  for(i = 0; i < sz; i++){
+    for(j = 0; j < sz; j++) {
+      printf("%f, ", arr[i*sz+j] );
+    }
+    printf("\n");
+  }
 }
