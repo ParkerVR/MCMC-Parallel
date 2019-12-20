@@ -18,7 +18,7 @@
   #include <stdint.h>
   
 //
-#elif COMPILER == CUDA
+#elif COMPILER == NVCC
   #include <cstdio>
   #include <cstdlib>
   #include <math.h>
