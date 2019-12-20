@@ -4,21 +4,21 @@
 #if PRINT_TIME == 1
 
   // CPU Timers
-  time_t cpu_timer_start();
-  float cpu_time_elapsed(time_t start_c);
+  clock_t cpu_timer_start();
+  float cpu_time_elapsed(clock_t start_c);
 
-  time_t cpu_timer_start() {
+  clock_t cpu_timer_start() {
 
-    time_t start_c = time(NULL);
+    clock_t start_c = clock();
     return start_c;
 
   }
 
   // Returns elapsed time in seconds
-  float cpu_time_elapsed(time_t start_c) {
+  float cpu_time_elapsed(clock_t start_c) {
 
-    time_t stop_c = time(NULL);
-    float elapsed_c = difftime(stop_c, start_c);  // seconds 
+    clock_t stop_c = clock();
+    float elapsed_c = (float)(stop_c - start_c) / CLOCKS_PER_SEC;  // seconds 
     return elapsed_c;
 
   }

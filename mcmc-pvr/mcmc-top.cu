@@ -1,4 +1,4 @@
-// Top level program to be run
+// MARKOV CHAIN MONTE CARLO MAIN FILE
 
 // Go to config or readme for compile instuctions
 
@@ -9,42 +9,46 @@
 
 
 
-int main(){
+int main() {
 
-  int sz = ARR_SZ;
-  int lg = ARR_LG;
+  clock_t cpu_timer = cpu_timer_start();
 
- 
+  i_t sz = ARR_SZ;
+  i_t lg = ARR_LG; 
 
   num_t* arr;
   arr = malloc(sizeof(num_t) * sz);
 
-  int seed = 420;
-  int endstates = ENDSTATES;
+
+  #if SEEDED
+    int seed = SEED;
+  #else
+    int seed = time(0);
+    printf("\nSeed Generated: %d", seed);
+  #endif
+
+  i_t endstates = ENDSTATES;
   arr_init_cum_rand(arr, lg, endstates, seed);
 
+  #if PRINT_ARR
+    arr_print(arr, lg);
+  #endif
 
-  arr_print(arr, lg);
+  i_t outRow = mcmc_serial(arr, lg) - lg + endstates + 1;
 
-  mcmc_serial(arr, lg);
+  #if PRINT_RESULT
+    printf("\n LG = %ld FINISHED AT OUTROW # %ld", lg, outRow);
+  #endif
 
-#if PRINT_STEPS  
-  printf("\n FINISHED");
-#endif
+  #if PRINT_TIME
+    float cpu_time = cpu_time_elapsed(cpu_timer);
+    printf("\nCPU Time Elapsed: %1.3f", cpu_time);
+  #endif
 
   return 0;
 }
 
 
-
+// printf("%lu", sizeof(i_t)); // Tells num bytes in data type
 // printf("%d", PTRDIFF_MAX); // Used to determine practical max bytes per array
 
-// MANUAL TESTING ARRAY
-/* 
-num_t arr[ARR_SZ]= {
-  (num_t) 0.0, (num_t) 0.3, (num_t) 0.6, (num_t) 1.0,
-  (num_t) 0.1, (num_t) 0.2, (num_t) 0.3, (num_t) 1.0,
-  (num_t) 0.5, (num_t) 0.6, (num_t) 0.7, (num_t) 1.0,
-  (num_t) 0.0, (num_t) 0.0, (num_t) 0.0, (num_t) 1.0,
-};
-*/

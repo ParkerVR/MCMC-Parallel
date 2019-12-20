@@ -1,23 +1,23 @@
 // MCMC Serial Algorithm
 
 
-int checkFinished(num_t* arr, int lg, int row);
-int nextRow(num_t* arr, int lg, int row);
-int mcmc_serial(num_t* arr, int lg);
+i_t checkFinished(num_t* arr, i_t lg, i_t row);
+i_t nextRow(num_t* arr, i_t lg, i_t row);
+i_t mcmc_serial(num_t* arr, i_t lg);
 
-int checkFinished(num_t* arr, int lg, int row) {
+i_t checkFinished(num_t* arr, i_t lg, i_t row) {
   if (arr[row*lg+row] == 1.0)
     return 1;
   else return 0;
 }
 
 // 'Statistical' Search for closest value <= to random
-int nextRow(num_t* arr, int lg, int row) {
+i_t nextRow(num_t* arr, i_t lg, i_t row) {
   
   num_t random;
   random = (num_t)rand()/(num_t)(RAND_MAX);
   
-  int index;
+  i_t index;
  
   index = lg*random;
 
@@ -37,8 +37,8 @@ int nextRow(num_t* arr, int lg, int row) {
 
 }
 
-int mcmc_serial(num_t* arr, int lg) {
-  int index = 0;
+i_t mcmc_serial(num_t* arr, i_t lg) {
+  i_t index = 0;
   while( !checkFinished(arr, lg, index) ){
     index = nextRow(arr, lg, index);
   }
