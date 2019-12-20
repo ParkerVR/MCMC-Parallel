@@ -18,6 +18,7 @@
 #endif
 
 int main(){
-  
+  float* arr;
+  arr = malloc(sizeof(num_t) * ARR_TOT);
   return 0;
 }
