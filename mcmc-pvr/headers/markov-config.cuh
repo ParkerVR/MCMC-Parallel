@@ -3,7 +3,6 @@
 #define ARR_L                16
 #define ARR_TOT              ARR_L*ARR_L
 
-
 #define num_t                float
 
 #define PRINT_TIME           1
