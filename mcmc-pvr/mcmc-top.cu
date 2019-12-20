@@ -17,16 +17,8 @@ int main(){
 
   int sz = ARR_SZ;
   int lg = ARR_LG;
-  // printf("%d", PTRDIFF_MAX); // Used to determine practical max bytes per array
-  // ARRAY DEBUG GENERATOR
-  /* 
-  num_t arr[ARR_SZ]= {
-    (num_t) 0.0, (num_t) 1.1, (num_t) 2.2, (num_t) 3.3,
-    (num_t) 1.1, (num_t) 2.2, (num_t) 3.3, (num_t) 4.4,
-    (num_t) 5.5, (num_t) 6.6, (num_t) 7.7, (num_t) 8.8,
-    (num_t) 9.9, (num_t) 0.0, (num_t) 1.1, (num_t) 2.2
-  };
-  */
+
+ 
 
   num_t* arr;
   arr = malloc(sizeof(num_t) * sz);
@@ -40,3 +32,17 @@ int main(){
 
   return 0;
 }
+
+
+
+// printf("%d", PTRDIFF_MAX); // Used to determine practical max bytes per array
+
+// MANUAL TESTING ARRAY
+/* 
+num_t arr[ARR_SZ]= {
+  (num_t) 0.0, (num_t) 0.3, (num_t) 0.6, (num_t) 1.0,
+  (num_t) 0.1, (num_t) 0.2, (num_t) 0.3, (num_t) 1.0,
+  (num_t) 0.5, (num_t) 0.6, (num_t) 0.7, (num_t) 1.0,
+  (num_t) 0.0, (num_t) 0.0, (num_t) 0.0, (num_t) 1.0,
+};
+*/

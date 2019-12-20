@@ -19,6 +19,6 @@
 
 
 #define PRINT_TIME           1
-#define PRINT_DECIMALS       3
+#define PRINT_DECIMALS       -1
 #define ENABLE_SERIAL        0
 #define ENABLE_GPU           0

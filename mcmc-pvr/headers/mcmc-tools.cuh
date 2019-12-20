@@ -88,7 +88,7 @@ void arr_print(num_t* arr, int lg) {
   
   char printstr[] = "%1.2f"; //default print 4 chars
 #if PRINT_DECIMALS < 0 || PRINT_DECIMALS > 9
-  #warning PRINT_DECIMALS unsupported, using default (2)
+  #warning "PRINT_DECIMALS unsupported, using default (2)"
 #elif PRINT_DECIMALS
   printstr[3] = '0' + PRINT_DECIMALS; 
 #endif
