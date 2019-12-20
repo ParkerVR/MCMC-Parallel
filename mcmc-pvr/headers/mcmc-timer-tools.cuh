@@ -4,6 +4,9 @@
 #if PRINT_TIME == 1
 
   // CPU Timers
+  time_t cpu_timer_start();
+  float cpu_time_elapsed(time_t start_c);
+
   time_t cpu_timer_start() {
 
     time_t start_c = time(NULL);
@@ -28,6 +31,9 @@
     cudaEvent_t start_g, stop_g; 
   }; 
   typedef struct cudaTimer time_g; 
+  
+  time_g gpu_timer_start();
+  float gpu_time_elapsed(time_g gpu_timer);
 
   time_g gpu_timer_start() {
     

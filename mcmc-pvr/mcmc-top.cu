@@ -8,13 +8,6 @@
 
 
 
-#if ENABLE_SERIAL
-  #include "mcmc-serial.cuh"
-#endif
-
-#if ENABLE_GPU
-  #include "mcmc-parallel.cuh"
-#endif
 
 int main(){
 
@@ -32,6 +25,9 @@ int main(){
 
 
   arr_print(arr, lg);
+  int i = ENABLE_SERIAL;
+  printf("%d", i);
+  //nextRow(arr, lg, 0);
 
   return 0;
 }
