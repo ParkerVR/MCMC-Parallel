@@ -4,7 +4,7 @@
 
 
 #include "mcmc-config.cuh" // The config can be swapped
-#include "mcmc-headers.cuh"
+#include "mcmc-headers.cuh" // Lists all internal includes
 
 
 
