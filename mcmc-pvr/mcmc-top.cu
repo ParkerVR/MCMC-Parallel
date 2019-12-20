@@ -11,14 +11,16 @@
 
 int main() {
 
-  
+  #if PRINT_TIME
+      clock_t setup_timer = cpu_timer_start();
+  #endif
   i_t sz = ARR_SZ;
   i_t lg = ARR_LG; 
 
   num_t* arr;
   arr = (num_t*)malloc(sizeof(num_t) * sz);
 
-  printf("\nTesting %I64d nodes with %I64d endstates.\n", lg, ENDSTATES);
+  printf("\nTesting %I64d nodes with %d endstates.\n", lg, ENDSTATES);
 
   #if SEEDED
     int seed = SEED;
@@ -30,27 +32,34 @@ int main() {
   i_t endstates = ENDSTATES;
   arr_init_cum_rand(arr, lg, endstates, seed);
 
+  #if PRINT_TIME
+    float setup_time = cpu_time_elapsed(setup_timer);
+    printf("\nSetup Time Elapsed: %1.3f seconds\n", setup_time);
+  #endif
+
   #if PRINT_ARR
     arr_print(arr, lg);
   #endif
 
   
   #if ENABLE_GPU
-  
-    num_t* spec_table = (num_t*)malloc(sizeof(num_t) * (lg-endstates));
-    get_spec_table(arr, spec_table, lg, endstates);
+    i_t spec_lg = lg - endstates;
+    num_t* spec_table = (num_t*)malloc(sizeof(num_t) * (spec_lg));
+    get_spec_table(arr, spec_table, lg, spec_lg);
 
     #if PRINT_SPEC
-      print_spec_table(spec_table, lg, endstates);
+      print_spec_table(spec_table, spec_lg);
     #endif
 
-    time_g gpu_timer = gpu_timer_start();
+    #if PRINT_TIME
+      time_g gpu_timer = gpu_timer_start();
+    #endif
 
     start_gpu(arr, spec_table, lg);
-
+    
     #if PRINT_TIME
       float gpu_time = gpu_time_elapsed(gpu_timer);
-      printf("\nGPU Time Elapsed: %1.4f seconds\n", gpu_time);
+      printf("\nGPU Time Elapsed: %1.8f seconds\n", gpu_time);
     #endif
 
   #endif
@@ -58,7 +67,9 @@ int main() {
 
   #if ENABLE_SERIAL
 
-    clock_t cpu_timer = cpu_timer_start();
+    #if PRINT_TIME
+      clock_t cpu_timer = cpu_timer_start();
+    #endif
 
     i_t outRow = mcmc_serial(arr, lg) - lg + endstates + 1;
   
@@ -68,7 +79,7 @@ int main() {
 
     #if PRINT_TIME
       float cpu_time = cpu_time_elapsed(cpu_timer);
-      printf("\nCPU Time Elapsed: %1.4f seconds\n", cpu_time);
+      printf("\nCPU Time Elapsed: %1.3f seconds\n", cpu_time);
     #endif
 
   #endif
