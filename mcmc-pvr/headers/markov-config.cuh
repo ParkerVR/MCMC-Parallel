@@ -4,9 +4,10 @@
 //Choose compiler from list below
 #define COMPILER 0
 
-#define GCC 0
-#define GPP 1
-#define CUDA 2
+#define GCC       0
+#define GPP       1
+#define CUDA      2
+#define OTHER      3
 
 
 #define ARR_LG               4

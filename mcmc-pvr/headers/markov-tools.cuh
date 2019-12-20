@@ -7,13 +7,7 @@
   #include <math.h>
   #include <time.h>
   #include <stdint.h>
-//
-#elif COMPILER == CUDA
-  #include <cstdio>
-  #include <cstdlib>
-  #include <math.h>
-  #include <time.h>
-  #include <stdint.h>
+
 
 // g++ -x c mcmc.cu -o mcmc_s
 #elif COMPILER == GPP
@@ -23,13 +17,21 @@
   #include <time.h>
   #include <stdint.h>
   
+//
+#elif COMPILER == CUDA
+  #include <cstdio>
+  #include <cstdlib>
+  #include <math.h>
+  #include <time.h>
+  #include <stdint.h>
+
 #else
   #include <cstdio>
   #include <cstdlib>
   #include <math.h>
   #include <time.h>
   #include <stdint.h>
-  
+
 #endif
 
 
@@ -39,21 +41,20 @@
   #include "cuPrintf.cuh"
 #endif
 
-void printarr(num_t* arr, int lg);
-void zeroarr(num_t* arr, int sz);
-void initializeArray1D(num_t*arr, int lg, int endstates, int seed);
+void arr_print(num_t* arr, int lg);
+void arr_zero(num_t* arr, int sz);
+void arr_init_cum_rand(num_t*arr, int lg, int endstates, int seed);
 
 
-void initializeArray1D(num_t *arr, int lg, int endstates, int seed) {
-  zeroarr(arr, lg);
+void array_init_cum_rand(num_t *arr, int lg, int endstates, int seed) {
+  arr_zero(arr, lg);
   int i, j;
   num_t randNum;
   srand(seed);
 
-  // Generate random rows that sum to probability of 1
-
+  // Generate cumulative random rows that end at 1
   num_t rowSum;
-  for (i = 0; i < lg-2; i++) {
+  for (i = 0; i < lg-endstates; i++) {
     rowSum = 0;
     for (j = 0; j < lg; j++) {
       randNum = (num_t) rand();
@@ -66,27 +67,23 @@ void initializeArray1D(num_t *arr, int lg, int endstates, int seed) {
     }
   }
 
-  // Define (2) end states
-  // Note based on rules currently, last number will always be end state
-  for (j = 0; j < lg; j++) {
-    arr[(lg-2)*lg + j] = 0;
-    arr[(lg-1)*lg + j] = 0;
+  // Define endstates arr[i,i] = 1
+  // Note based on randomization process currently, last row will always be an end state
+  for(i = lg - endstates; i < lg; i++) {
+    arr[i*lg + i] = 1.0;
   }
-
-  arr[(lg-2)*lg + lg-2] = 1.0;
-  arr[(lg-1)*lg + lg-1] = 1.0;
 
   //printarr(arr,lg);
 }
 
-void zeroarr(num_t* arr, int lg) {
+void arr_zero(num_t* arr, int lg) {
   int i, j;
   for(i = 0; i < lg; i++)
     for(j = 0; j < lg; j++)
       arr[i*lg+j] = (num_t)0.0;
 }
 
-void printarr(num_t* arr, int lg) {
+void arr_print(num_t* arr, int lg) {
   int i, j;
   
   char printstr[] = "%1.2f"; //default print 4 chars

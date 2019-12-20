@@ -33,10 +33,10 @@ int main(){
 
   int seed = 420;
   int endstates = ENDSTATES;
-  initializeArray1D(arr, lg, endstates, seed);
+  arr_init_cum_rand(arr, lg, endstates, seed);
 
 
-  printarr(arr, lg);
+  arr_print(arr, lg);
 
   return 0;
 }
