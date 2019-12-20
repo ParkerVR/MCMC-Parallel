@@ -1,52 +1,10 @@
-// Markov Chain Monte Carlo Helper Tools & Sys Includes
-
-// gcc -x c mcmc.cu -o mcmc_s
-#if COMPILER == GCC
-  #include <stdlib.h>
-  #include <stdio.h>
-  #include <math.h>
-  #include <time.h>
-  #include <stdint.h>
-
-
-// g++ -x c mcmc.cu -o mcmc_s
-#elif COMPILER == GPP
-  #include <cstdio>
-  #include <cstdlib>
-  #include <math.h>
-  #include <time.h>
-  #include <stdint.h>
-  
-//
-#elif COMPILER == CUDA
-  #include <cstdio>
-  #include <cstdlib>
-  #include <math.h>
-  #include <time.h>
-  #include <stdint.h>
-
-#else
-  #include <cstdio>
-  #include <cstdlib>
-  #include <math.h>
-  #include <time.h>
-  #include <stdint.h>
-
-#endif
-
-
-
-#if ENABLE_GPU
-  #include "cuPrintf.cu"
-  #include "cuPrintf.cuh"
-#endif
+// MCMC Array Tools
 
 void arr_print(num_t* arr, int lg);
 void arr_zero(num_t* arr, int sz);
 void arr_init_cum_rand(num_t*arr, int lg, int endstates, int seed);
 
-
-void array_init_cum_rand(num_t *arr, int lg, int endstates, int seed) {
+void arr_init_cum_rand(num_t *arr, int lg, int endstates, int seed) {
   arr_zero(arr, lg);
   int i, j;
   num_t randNum;

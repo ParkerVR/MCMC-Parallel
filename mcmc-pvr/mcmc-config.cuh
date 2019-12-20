@@ -17,7 +17,6 @@
 
 #define num_t                float
 
-
 #define PRINT_TIME           1
 #define PRINT_DECIMALS       -1
 #define ENABLE_SERIAL        0

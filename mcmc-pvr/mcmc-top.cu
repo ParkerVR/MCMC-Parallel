@@ -2,8 +2,11 @@
 
 // Go to config or readme for compile instuctions
 
-#include "./headers/markov-config.cuh"
-#include "./headers/markov-tools.cuh"
+
+#include "mcmc-config.cuh" // The config can be swapped
+#include "mcmc-headers.cuh"
+
+
 
 #if ENABLE_SERIAL
   #include "mcmc-serial.cuh"
