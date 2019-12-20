@@ -16,14 +16,14 @@ int main() {
   i_t lg = ARR_LG; 
 
   num_t* arr;
-  arr = malloc(sizeof(num_t) * sz);
+  arr = (num_t*)malloc(sizeof(num_t) * sz);
 
 
   #if SEEDED
     int seed = SEED;
   #else
     int seed = time(0);
-    printf("\nSeed Generated: %d", seed);
+    printf("\nSeed Generated: %d\n", seed);
   #endif
 
   i_t endstates = ENDSTATES;
@@ -55,7 +55,7 @@ int main() {
     i_t outRow = mcmc_serial(arr, lg) - lg + endstates + 1;
 
     #if PRINT_RESULT
-      printf("\n LG = %ld FINISHED AT OUTROW # %ld", lg, outRow);
+      printf("\nLG = %I64d FINISHED AT OUTROW # %I64d", lg, outRow);
     #endif
 
     #if PRINT_TIME

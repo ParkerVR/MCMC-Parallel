@@ -60,7 +60,7 @@ void arr_print(num_t* arr, int lg) {
   printf("\n");
   for(i = 0; i < lg; i++){
     for(j = 0; j < lg; j++) {
-      printf("%1.3f ", arr[i*lg+j] );
+      printf(printstr, arr[i*lg+j] );
     }
     printf("\n");
   }

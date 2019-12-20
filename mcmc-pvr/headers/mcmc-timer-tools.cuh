@@ -54,7 +54,7 @@
 
     float elapsed_g;
     cudaEventRecord(gpu_timer.stop_g, 0);
-    cudaEvenSynchronize(gpu_timer.stop_g);
+    cudaEventSynchronize(gpu_timer.stop_g);
     cudaEventElapsedTime(&elapsed_g, gpu_timer.start_g, gpu_timer.stop_g); // ms
 
     elapsed_g = elapsed_g/1000; // seconds
