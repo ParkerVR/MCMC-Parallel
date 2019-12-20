@@ -20,7 +20,7 @@
 
 #define PRINT_TIME           1
 #define PRINT_N_DECIMALS     3
-
+#define PRINT_STEPS          1
 
 #define ENABLE_SERIAL        1
 #define ENABLE_GPU           0

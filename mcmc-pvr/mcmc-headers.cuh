@@ -8,10 +8,10 @@
 #include "./headers/mcmc-timer-tools.cuh"
 
 // Algorithms
-#if ENABLE_SERIAL == 1
+#if ENABLE_SERIAL
   #include "mcmc-serial.cuh"
 #endif
 
-#if ENABLE_GPU == 1
+#if ENABLE_GPU
   #include "mcmc-parallel.cuh"
 #endif

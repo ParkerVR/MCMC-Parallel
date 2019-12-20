@@ -25,9 +25,12 @@ int main(){
 
 
   arr_print(arr, lg);
-  int i = ENABLE_SERIAL;
-  printf("%d", i);
-  //nextRow(arr, lg, 0);
+
+  mcmc_serial(arr, lg);
+
+#if PRINT_STEPS  
+  printf("\n FINISHED");
+#endif
 
   return 0;
 }
