@@ -6,6 +6,7 @@
 // Tools
 #include "./headers/mcmc-arr-tools.cuh"
 #include "./headers/mcmc-timer-tools.cuh"
+#include "./headers/mcmc-spec-ex-tools.cuh"
 
 // Algorithms
 #if ENABLE_SERIAL
