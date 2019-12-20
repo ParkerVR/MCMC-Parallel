@@ -18,6 +18,7 @@ int main() {
   num_t* arr;
   arr = (num_t*)malloc(sizeof(num_t) * sz);
 
+  printf("\nTesting %I64d nodes with %I64d endstates.\n", lg, ENDSTATES);
 
   #if SEEDED
     int seed = SEED;
@@ -36,13 +37,20 @@ int main() {
   
   #if ENABLE_GPU
   
+    num_t* spec_table = (num_t*)malloc(sizeof(num_t) * (lg-endstates));
+    get_spec_table(arr, spec_table, lg, endstates);
+
+    #if PRINT_SPEC
+      print_spec_table(spec_table, lg, endstates);
+    #endif
+
     time_g gpu_timer = gpu_timer_start();
 
-
+    start_gpu(arr, spec_table, lg);
 
     #if PRINT_TIME
       float gpu_time = gpu_time_elapsed(gpu_timer);
-      printf("\nGPU Time Elapsed: %1.3f\n", gpu_time);
+      printf("\nGPU Time Elapsed: %1.4f seconds\n", gpu_time);
     #endif
 
   #endif
@@ -53,14 +61,14 @@ int main() {
     clock_t cpu_timer = cpu_timer_start();
 
     i_t outRow = mcmc_serial(arr, lg) - lg + endstates + 1;
-
+  
     #if PRINT_RESULT
       printf("\nLG = %I64d FINISHED AT OUTROW # %I64d", lg, outRow);
     #endif
 
     #if PRINT_TIME
       float cpu_time = cpu_time_elapsed(cpu_timer);
-      printf("\nCPU Time Elapsed: %1.3f\n", cpu_time);
+      printf("\nCPU Time Elapsed: %1.4f seconds\n", cpu_time);
     #endif
 
   #endif

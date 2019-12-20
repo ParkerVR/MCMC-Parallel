@@ -28,9 +28,9 @@ i_t nextRow(num_t* arr, i_t lg, i_t row) {
     index--;
 
 #if PRINT_STEPS  
-  printf("\n Current Row: %d", row);
+  printf("\n Current Row: %I64d", row);
   printf("\n Random: %1.3f", random);
-  printf("\n Next Row: %d\n", index);
+  printf("\n Next Row: %I64d\n", index);
 #endif
 
   return index;
@@ -39,8 +39,11 @@ i_t nextRow(num_t* arr, i_t lg, i_t row) {
 
 i_t mcmc_serial(num_t* arr, i_t lg) {
   i_t index = 0;
+  i_t step_count = 0;
   while( !checkFinished(arr, lg, index) ){
     index = nextRow(arr, lg, index);
+    step_count++;
   }
+  printf("\nSerial complete in %I64d steps.", step_count);
   return index;
 }

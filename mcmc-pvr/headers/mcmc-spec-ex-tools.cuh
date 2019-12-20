@@ -2,21 +2,21 @@
 
 
 // Creates stage speculative execution table
-void get_spec_table(num_t* arr, num_t* table, i_t lg, i_t endpoints);
-void print_spec_table(num_t* table, i_t lg);
+void get_spec_table(num_t* arr, num_t* table, i_t lg, i_t endstates);
+void print_spec_table(num_t* table, i_t lg, i_t endstates);
 
 
-void print_spec_table(num_t* table, i_t lg) {
+void print_spec_table(num_t* table, i_t lg, i_t endstates) {
 
   i_t i;
   printf("\nSpeculative Execution Table\n");
-  for(i = 0; i < lg; i++){
-    printf("  %I64d | %I64d\n",i,table[i]);
+  for(i = 0; i < lg-endstates; i++) {
+    printf("  %I64d | %f\n",i,table[i]);
   }
 
 }
 
-void get_spec_table(num_t* arr, num_t* table, i_t lg, i_t endpoints) {
+void get_spec_table(num_t* arr, num_t* table, i_t lg, i_t endstates) {
 
   // This can be made more efficient by sampling random rows -- works better on large table
   // For our purposes the probability will average out for each operation - need a different randomizer for true effect
@@ -26,24 +26,30 @@ void get_spec_table(num_t* arr, num_t* table, i_t lg, i_t endpoints) {
 
   // If we lose too much accuracy, we can always use two arrays and divide by sum each row
 
-  i_t l = lg - endpoints;
+  i_t l = lg - endstates;
 
   for(i = 0; i < l; i++) {
-    for(j = 0; j < lg; j++) {
-      table[j] += arr[i*lg + j];
-      sum += arr[i*lg + j];
+
+    table[0] += arr[i*lg];
+    sum += arr[i*lg];
+
+    for(j = 1; j < l; j++) {
+      table[j] += arr[i*lg + j] - arr[i*lg + j-1];
+      sum += arr[i*lg + j] - arr[i*lg + j-1];
     }
   }
 
-  for(i = 0; i < lg; i++) {
+  for(i = 0; i < l; i++) {
     table[i] = table[i] / sum;
   }
 
-  /*
-  // Make cumulative ?
+  
+  // Make cumulative
   for(i = 1; i < l; i++) {
     table[i] += table[i-1];
   }
-  */
+  
+  // Deal with roundoff
+  table[lg-1] = 1.0;
 
 }

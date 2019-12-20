@@ -51,7 +51,7 @@ void arr_zero(num_t* arr, int lg) {
 void arr_print(num_t* arr, int lg) {
   int i, j;
   
-  char printstr[] = "%1.2f"; //default print 4 chars
+  char printstr[] = "%1.2f, "; //default print 2 decimals
 #if PRINT_N_DECIMALS < 0 || PRINT_N_DECIMALS > 9
   #warning "PRINT_N_DECIMALS unsupported, using default (2)"
 #elif PRINT_DECIMALS
