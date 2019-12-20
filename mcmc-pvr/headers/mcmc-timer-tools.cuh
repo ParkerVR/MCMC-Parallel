@@ -36,11 +36,11 @@
   float gpu_time_elapsed(time_g gpu_timer);
 
   time_g gpu_timer_start() {
-    
-    //cudaEvent_t start_g, stop_g;
+
     time_g gpu_timer;
-    gpu_timer.start_g = start_g;
-    gpu_timer.stop_g = stop_g;
+    //cudaEvent_t start_g, stop_g;
+    //gpu_timer.start_g = start_g;
+    //gpu_timer.stop_g = stop_g;
     cudaEventCreate(&gpu_timer.start_g);
     cudaEventCreate(&gpu_timer.stop_g);
     cudaEventRecord(gpu_timer.start_g, 0);

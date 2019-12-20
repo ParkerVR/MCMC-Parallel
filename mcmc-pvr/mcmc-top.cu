@@ -11,8 +11,7 @@
 
 int main() {
 
-  clock_t cpu_timer = cpu_timer_start();
-
+  
   i_t sz = ARR_SZ;
   i_t lg = ARR_LG; 
 
@@ -34,15 +33,36 @@ int main() {
     arr_print(arr, lg);
   #endif
 
-  i_t outRow = mcmc_serial(arr, lg) - lg + endstates + 1;
+  
+  #if ENABLE_GPU
+  
+    time_g gpu_timer = gpu_timer_start();
 
-  #if PRINT_RESULT
-    printf("\n LG = %ld FINISHED AT OUTROW # %ld", lg, outRow);
+
+
+    #if PRINT_TIME
+      float gpu_time = gpu_time_elapsed(gpu_timer);
+      printf("\nGPU Time Elapsed: %1.3f\n", gpu_time);
+    #endif
+
   #endif
+  
 
-  #if PRINT_TIME
-    float cpu_time = cpu_time_elapsed(cpu_timer);
-    printf("\nCPU Time Elapsed: %1.3f", cpu_time);
+  #if ENABLE_SERIAL
+
+    clock_t cpu_timer = cpu_timer_start();
+
+    i_t outRow = mcmc_serial(arr, lg) - lg + endstates + 1;
+
+    #if PRINT_RESULT
+      printf("\n LG = %ld FINISHED AT OUTROW # %ld", lg, outRow);
+    #endif
+
+    #if PRINT_TIME
+      float cpu_time = cpu_time_elapsed(cpu_timer);
+      printf("\nCPU Time Elapsed: %1.3f\n", cpu_time);
+    #endif
+
   #endif
 
   return 0;

@@ -24,8 +24,11 @@
 
 
 // Array Width/Height
-// Max LG 23160 (2^14.5)
-#define ARR_LG               (i_t)23160
+// Max LG 23160   (2^14.5)  cyg
+// Max LG 111111  (2^16.75) zsh64 
+// Max LG >1000000          scc
+
+#define ARR_LG               (i_t)10000
 #define ARR_SZ               (i_t)(ARR_LG*ARR_LG)
 
 #define ENDSTATES            2
@@ -43,4 +46,4 @@
 #define PRINT_RESULT         1
 
 #define ENABLE_SERIAL        1
-#define ENABLE_GPU           0
+#define ENABLE_GPU           1
