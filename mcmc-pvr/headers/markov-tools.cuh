@@ -1,60 +1,106 @@
 // Markov Chain Monte Carlo Helper Tools & Sys Includes
 
-#include <cstdio>
-#include <cstdlib>
-#include <math.h>
-#include <time.h>
+// gcc -x c mcmc.cu -o mcmc_s
+#if COMPILER == GCC
+  #include <stdlib.h>
+  #include <stdio.h>
+  #include <math.h>
+  #include <time.h>
+  #include <stdint.h>
+//
+#elif COMPILER == CUDA
+  #include <cstdio>
+  #include <cstdlib>
+  #include <math.h>
+  #include <time.h>
+  #include <stdint.h>
+
+// g++ -x c mcmc.cu -o mcmc_s
+#elif COMPILER == GPP
+  #include <cstdio>
+  #include <cstdlib>
+  #include <math.h>
+  #include <time.h>
+  #include <stdint.h>
+  
+#else
+  #include <cstdio>
+  #include <cstdlib>
+  #include <math.h>
+  #include <time.h>
+  #include <stdint.h>
+  
+#endif
+
+
 
 #if ENABLE_GPU
   #include "cuPrintf.cu"
   #include "cuPrintf.cuh"
 #endif
 
-void printarr(float* arr, int sz);
-void initializeArray1D(float *arr, int sz, int seed);
+void printarr(num_t* arr, int lg);
+void zeroarr(num_t* arr, int sz);
+void initializeArray1D(num_t*arr, int lg, int endstates, int seed);
 
 
-void initializeArray1D(float *arr, int sz, int seed) {
+void initializeArray1D(num_t *arr, int lg, int endstates, int seed) {
+  zeroarr(arr, lg);
   int i, j;
-  float randNum;
+  num_t randNum;
   srand(seed);
 
   // Generate random rows that sum to probability of 1
 
-  float rowSum;
-  for (i = 0; i < sz-2; i++) {
+  num_t rowSum;
+  for (i = 0; i < lg-2; i++) {
     rowSum = 0;
-    for (j = 0; j < sz; j++) {
-      randNum = (float) rand();
+    for (j = 0; j < lg; j++) {
+      randNum = (num_t) rand();
       rowSum += randNum;
-      arr[i*sz + j] = rowSum;
-      printf("%f\n", arr[i*sz+j]);
+      arr[i*lg + j] = rowSum;
+      //printf("%f\n", arr[i*lg+j]);
     }
-    for (j = 0; j < sz; j++) {
-      arr[i*sz + j] = arr[i*sz + j] / rowSum;
+    for (j = 0; j < lg; j++) {
+      arr[i*lg + j] = arr[i*lg + j] / rowSum;
     }
   }
 
   // Define (2) end states
   // Note based on rules currently, last number will always be end state
-  for (int j = 0; j < sz; j++) {
-    arr[(sz-2)*sz + j] = 0;
-    arr[(sz-1)*sz + j] = 0;
+  for (j = 0; j < lg; j++) {
+    arr[(lg-2)*lg + j] = 0;
+    arr[(lg-1)*lg + j] = 0;
   }
 
-  arr[(sz-2)*sz + sz-2] = 1.0;
-  arr[(sz-1)*sz + sz-1] = 1.0;
+  arr[(lg-2)*lg + lg-2] = 1.0;
+  arr[(lg-1)*lg + lg-1] = 1.0;
 
-  printarr(arr,sz);
+  //printarr(arr,lg);
 }
 
-
-void printarr(float* arr, int sz) {
+void zeroarr(num_t* arr, int lg) {
   int i, j;
-  for(i = 0; i < sz; i++){
-    for(j = 0; j < sz; j++) {
-      printf("%f, ", arr[i*sz+j] );
+  for(i = 0; i < lg; i++)
+    for(j = 0; j < lg; j++)
+      arr[i*lg+j] = (num_t)0.0;
+}
+
+void printarr(num_t* arr, int lg) {
+  int i, j;
+  
+  char printstr[] = "%1.2f"; //default print 4 chars
+#if PRINT_DECIMALS < 0 || PRINT_DECIMALS > 9
+  #warning PRINT_DECIMALS unsupported, using default (2)
+#elif PRINT_DECIMALS
+  printstr[3] = '0' + PRINT_DECIMALS; 
+#endif
+  printf("\n");
+  for(i = 0; i < lg; i++){
+    for(j = 0; j < lg; j++) {
+      printf("%1.3f ", arr[i*lg+j] );
     }
     printf("\n");
   }
+
 }
